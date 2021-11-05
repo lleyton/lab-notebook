@@ -1,0 +1,124 @@
+import Layout from "../../components/Layout";
+import VectorResultantTable from "../../components/VectorResultantTable";
+import {
+  averageMagnitude,
+  averageDirectionDegrees,
+  averageDirectionRadians,
+} from "../../utils/vectorResultant";
+
+<Layout>
+# Vector Resultant Lab
+
+## Introduction
+
+Within this lab we used paper airplanes to help us learn how to calculate resultant vectors, while trying to maximize the displacement of the airplane.
+
+## Materials
+
+- 8 ½ x 11” piece of paper
+- measuring tape
+- graph paper
+
+## Procedure
+
+1. Make a paper plane out of the 8 ½ x 11” piece of paper (we used [this](https://gizmodo.com/how-to-fold-the-worlds-farthest-flying-paper-airplane-1660676516) design).
+
+2. Take your group to a clear area outside. Take along both measuring tape and graph paper.
+
+3. Mark your starting point.
+
+4. Throw the paper plane straight in front of you.
+
+5. Have someone else in your group mark where the plane lands.
+
+6. Walk straight forward from the starting point. Stop when you are even with the plane, and mark the spot where you are. Measure the distance from the starting point and record it.
+
+7. Now turn and walk toward the plane until you reach it. Measure the distance you walked again, and record it.
+
+8. Sketch these two vector elements of the paper plane’s flight on the graph paper.
+
+9. Sketch the resultant vector on the same piece of graph paper.
+
+10. Calculate the resultant vector. Record the value.
+
+11. (If time) Repeat steps 3 – 10 twice more. Record the necessary values.
+
+12. Calculate the average resultant magnitude and direction. Record it.
+
+## Data
+
+<VectorResultantTable />
+
+## Data Analysis
+
+First, let's import the data collected, and define a helper function to convert degrees to radians.
+
+```ts
+const rawData = [
+  { deltaX: 0.4, deltaY: 14 },
+  { deltaX: 0, deltaY: 7 },
+  { deltaX: 1.8, deltaY: 4.8 },
+];
+
+const radiansToDegrees = (radians: number) => (radians * 180) / Math.PI;
+```
+
+Next, let's define a function to calculate the magnitude from ΔX and ΔY, which uses the pythagorean theorem.
+
+```ts
+const calculateMagnitude = (deltaX: number, deltaY: number) =>
+  Math.sqrt(deltaX ** 2 + deltaY ** 2);
+```
+
+Now, we can use this magnitude (hypotenuse) and ΔX (opposite) to get the sine of this angle. From here we use the arcsin function to get a value in radians.
+
+```ts
+const calculateAngle = (deltaX: number, magnitude: number) =>
+  Math.asin(deltaX / magnitude);
+```
+
+Now, we can calculate the table.
+
+```ts
+export const data = rawData.map((row) => {
+  const magnitude = calculateMagnitude(row.deltaX, row.deltaY);
+  const radians = calculateAngle(row.deltaX, magnitude);
+  const degrees = radiansToDegrees(radians);
+
+  return {
+    ...row,
+    magnitude,
+    radians,
+    degrees,
+  };
+});
+```
+
+Finally, we can calculate the average magnitude and direction:
+
+```ts
+export const averageMagnitude =
+  data.map((row) => row.magnitude).reduce((a, b) => a + b) / data.length;
+
+export const averageDirectionDegrees =
+  data.map((row) => row.degrees).reduce((a, b) => a + b) / data.length;
+
+export const averageDirectionRadians =
+  data.map((row) => row.radians).reduce((a, b) => a + b) / data.length;
+```
+
+Average Magnitude: {averageMagnitude.toFixed(2)}
+
+Average Direction (deg): {averageDirectionDegrees.toFixed(2)}
+
+Average Direction (rad): {averageDirectionRadians.toFixed(2)}
+
+## Error Analysis
+
+We might have not thrown it in an exact straight line, biasing it towards a side. Another explanation could be the construction of the paper airplane, which would could have made an error in.
+
+## Conclusion
+
+While we might have not achieved a perfect straight line, this is within a reasonable margin of error, which I described before. Now magnitude wise, we didn't get too far, which indicates that this design isn't that optimal. Knowing how to calculate vectors is important because it is applicable to many problems in physics.
+
+</Layout>

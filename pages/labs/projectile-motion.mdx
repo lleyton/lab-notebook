@@ -1,0 +1,122 @@
+import Layout from "../../components/Layout";
+import ProjectileMotionTable from "../../components/ProjectileMotionTable";
+
+<Layout>
+# Projectile Motion Lab
+
+## Introduction
+
+Within this lab, we attempted to determine the optimal angle to throw an object, in order to maximize distance. We thew a pumpkin multiple times, recording the distance and time and used that to calculate the angle and initial velocity.
+
+## Materials
+
+- One mini-pumpkin or apple
+- A meter stick
+- Stopwatch
+- Calculator
+- Pen
+- Paper
+
+## Procedure
+
+1. Split up into groups of 4.
+
+2. Go, with your group and your materials, outside to an area where there are few people.
+
+3. Have one person, acting as the “chucker,” crouch down as close to the ground as possible while holding the pumpkin. (The ideal situation is for the “chucker” to lie face-up on the ground, but, since the ground is wet, any comfortable position close to ground level is fine.)
+
+4. One person should stay with the “chucker” to act as a timer.
+
+5. Two people should go stand by the “target” area, in order to record the landing spot of the pumpkin, and in order to make sure no passers-by get hit.
+
+6. When both are ready, the “chucker” should throw the pumpkin at the same time the timer presses “start” on the stopwatch. The pumpkin can be thrown using either overhand or underhand grip, as long as the trajectory of the pumpkin begins as close to ground level as possible.
+
+7. When the pumpkin lands, the timer should stop the stopwatch. The people at the other end should mark the ending position of the pumpkin.
+
+8. Measure the distance between the starting and ending point, in cm. Record the value
+
+9. Record the time measured on the stopwatch
+
+10. Time permitting (and assuming the pumpkin survived the flight, and subsequent crash), perform steps 6 – 9 anywhere from four to nine more times:
+
+11. Using the equations on the board, calculate the following quantities:
+
+- What was the angle of elevation of each pumpkin flight?
+
+- What was the magnitude of the initial velocity of each pumpkin’s flight?
+
+## Data
+
+<ProjectileMotionTable />
+
+![Projectile Motion Chart](/projectile-motion-chart.svg)
+
+## Data Analysis
+
+First, let's import the data collected, and define a helper function to convert radians to degrees.
+
+```ts
+const rawData = [
+  { deltaX: 17.2, time: 1.23 },
+  { deltaX: 17.2, time: 1.38 },
+  { deltaX: 17.2, time: 1.5 },
+  { deltaX: 15.64, time: 1.46 },
+  { deltaX: 18.75, time: 1.75 },
+  { deltaX: 16.84, time: 1.94 },
+  { deltaX: 18.86, time: 1.79 },
+  { deltaX: 14.53, time: 2.26 },
+  { deltaX: 15.65, time: 2.08 },
+];
+
+const radiansToDegrees = (radians: number) => (radians * 180) / Math.PI;
+```
+
+Now, in order to determine the angle that the pumpkin was thrown at, we can plug it into this function, which takes the ΔX and time, and returns a value in radians.
+
+```ts
+const calculateAngle = (deltaX: number, time: number) =>
+  Math.atan((9.8 * time ** 2) / (2 * deltaX));
+```
+
+Next, let's define a function to calculate the inital velocity from the previous information.
+
+```ts
+const calculateInitialVelocity = (
+  deltaX: number,
+  time: number,
+  angle: number
+) => deltaX / (Math.cos(angle) * time);
+```
+
+Now, we can calculate the table.
+
+```ts
+export const data = rawData.map((row) => {
+  const radians = calculateAngle(row.deltaX, row.time);
+  const degrees = radiansToDegrees(radians);
+  const initialVelocity = calculateInitialVelocity(
+    row.deltaX,
+    row.time,
+    radians
+  );
+
+  return {
+    ...row,
+    radians,
+    degrees,
+    initialVelocity,
+  };
+});
+```
+
+Finally, we can graph this data, where the X-axis would be the angle and the Y-axis the change of X, as shown in the graph before. When looking at the best fit line, we can see that it peaks around 40 degress, which indicates the optimal angle to throw an object to maximize distance.
+
+## Error Analysis
+
+Besides human error, such as inaccurately timeing or measuring the distance, there are other possibilties for error. One of these is that we're unable to fix the inital velocity that the pumpkin is thrown at each time, which would lead to variation in the distance. Fortunately, we were able to get the velocity to only vary around 12-15 m/s.
+
+## Conclusion
+
+Using this methodology, we were able to reasonably determine that the optional angle to throw a projectile in order to maximize distance would be around 40 degrees. While our method is subject to error, we were able to isolate it to a reasonable range. Knowing this optimal angle can help someone maximize distance when launching a projectile.
+
+</Layout>

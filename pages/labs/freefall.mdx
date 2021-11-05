@@ -1,0 +1,62 @@
+import Layout from "../../components/Layout";
+import { averageTime, averageDistance } from "../../utils/freefall";
+
+<Layout>
+# Freefall Lab
+
+## Introduction
+
+Within this lab, we attempted to find a form of measurement without using a measuring device. In our case, this was by using a timer and dropping an object.
+
+## Materials
+
+- A paperclip
+- A stopwatch
+- Our school's second floor blue stairs
+
+## Procedure
+
+One person holds a paper clip over the edge of the railing overlooking the floor below. Have another person on the floor below ready with a stopwatch. Person below counts down from 3 and says “go”. The moment “go” is said the person above drops the paperclip. When “go” is said the person below starts the stopwatch. The person below stops the stopwatch once the paperclip hits the ground. Then the time displayed on the stopwatch is recorded.
+
+## Data
+
+1. 1 sec
+2. 0.86 sec
+3. 0.79 sec
+4. 0.93 sec
+5. 0.79 sec
+
+## Data Analysis
+
+First, let's import the data collected.
+
+```ts
+const rawData = [1, 0.86, 0.79, 0.93, 0.79];
+```
+
+Now let's get the average of all of the times.
+
+```ts
+export const averageTime = rawData.reduce((a, b) => a + b) / rawData.length;
+```
+
+Finally, we can plug the average time into the 1D time and displacement equation.
+
+```ts
+export const averageDistance = (1 / 2) * 9.8 ** 2 * averageTime ** 2;
+```
+
+This leaves us with the averages:
+
+Average tine: {averageTime.toFixed(2)}
+Average distance: {averageDistance.toFixed(2)}
+
+## Error Analysis
+
+Human error would be the major category of error here, such as a slowed reaction time to stop the stopwatch when the paperclip hit the ground.
+
+## Conclusion
+
+Using the time and displacement equation, we were able to drop an object, measure the time, and use the known gravity constant in order to measure distance. This is signifigant, as there will be situations where it's impractical to use a measuring device.
+
+</Layout>
