@@ -1,0 +1,61 @@
+import Layout from "../../components/Layout";
+import {
+  FrictionBananaPeelTable,
+  FrictionSockTable,
+  FrictionDoorstopTable,
+} from "../../components/FrictionTable";
+
+<Layout>
+# Friction Lab
+
+## Introduction
+
+Within this lab, we are comparing the "slipperiness" of banana peels and other objects, in our case a doorstop and a sock. To perform this, we are measuring the force required to pull each object at 5 different masses each, using a spring scale. With the objects weight, which can be calculated from the total mass, and the force required to pull it, we are able to graph a best fit line for each object, where the x-axis is the weight and the y-axis the amount of force to pull it. The slope of the best fit line is the coeffeicent of friction which will help us determine the "slipperiness" of each object. I predict that the banana peel will be the most slippery, then the sock, then the doorstop.
+
+## Materials
+
+- electronic balance
+- spring scale
+- various masses (anything which will add mass, in our case 100g, 200g, 300g, 400g, and 500g masses)
+- banana peel
+- other objects you’d like to compare with banana peel (in our case, a sock and doorstop)
+
+## Procedure
+
+1. Measure the mass of each object (including masses) and record them.
+2. Place one of your masses on top of one of your testing objects. Record the total mass of your experimental object.
+3. Attach the spring scale to the mass/object combination.
+4. Pull the mass/object combination on a flat cement surface at a constant velocity. Record the reading on the spring scale (in Newtons).
+5. Repeat steps 5-7 with the rest of your masses. There should be 5 measurements total per object you are testing.
+6. Repeat all measurements for each object to be tested. Again, there should be 5 masses total which are coupled with each object, so that each object has 5 measurements made.
+
+## Data
+
+### Banana Peel
+
+<FrictionBananaPeelTable />
+<img src="/peel.png" />
+
+### Sock
+
+<FrictionSockTable />
+<img src="/sock.png" />
+
+### Doorstop
+
+<FrictionDoorstopTable />
+<img src="/doorstop.png" />
+
+## Data Analysis
+
+By using the coeffeicent of friction, which is represented as the slope of the best-fit line in the graphs above, we can determine the "slipperiness" of each object. In order from most slippery to least slippery, the objects are: doorstop (0.625), sock (0.747), and banana peel (0.748).
+
+## Error Analysis
+
+There were times within data collection where we had to redo measurements due to misreadings, such as in the doorstop data on the 310g mass sample and the banana peel data on the 529.8g sample. This indicates that our method of measurement, was error-prone. This could be mitigated for with a more accurate method of measurement, rather than using trusting a person to perceive the force in a short period of time. Collecting more samples for each mass and averaging them would also help with reducing errors.
+
+## Conclusion
+
+Surprisingly, the result turned out to be the reverse of my prediction. The doorstop was the most slippery, then the sock, then the banana peel. However, I doubt these conclusions based in the error-prone nature of the measurements.
+
+</Layout>
