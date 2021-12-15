@@ -1,0 +1,89 @@
+import Layout from "../../components/Layout";
+import { data } from "../../utils/friction-slide";
+
+<Layout>
+# Friction Slide Lab
+
+## Introduction
+
+In this lab, we will be calculating the coeffeicent of friction between a notebook and slide. The process for doing this is similar to the banana peel lab, but we will be determining this coefficient of friction in 2 dimenstional space. The purpose of this lab is to dettermine if it is possible to calculate the coeffeicent of friction accurately in 2 dimensions. I hypothesize that the notebook on the slide will be more slippery than the other object in the friction banana peel lab, since the slide is made to be slid on.
+
+## Materials
+
+- Slide
+- Notebook
+
+## Procedure
+
+1. Measure the length and height of the slide.
+2. Take the notebook to the top of the slide, and slide it down until it touches the bottom of the slide. Measure the time it takes to slide the notebook down.
+3. Repeat step 2, three times.
+
+## Data
+
+### Slide Data
+
+- Height: 1.05 m
+- Length: 2.36 m
+
+### Time to slide notebook
+
+1. 2.11 sec
+2. 1.52 sec
+3. 1.68 sec
+
+## Data Analysis
+
+First, we'll define constants for the data collected from our measurements.
+
+```ts
+const slideHeight = 1.05;
+const slideLength = 2.36;
+
+const timings = [2.11, 1.52, 1.68];
+const gravity = 9.8;
+```
+
+Now, let's calculate the angle opposite of the side of the height.
+
+```ts
+const theta = Math.asin(slideHeight / slideLength);
+```
+
+From here, we define a function to calculate the parallel acceleration.
+
+```ts
+const accelerationParallel = (time: number) =>
+  slideLength / ((1 / 2) * time ** 2);
+```
+
+Next, define a function for calculating the coeffeicent of friction from the parallel acceleration and theta.
+
+```ts
+const coefficentOfFriction = (accelerationParallel: number) =>
+  -(
+    (accelerationParallel - gravity * Math.sin(theta)) /
+    (gravity * Math.cos(theta))
+  );
+```
+
+Finally, we can calculate the coefficient of friction for time recorded.
+
+```ts
+export const data = timings.map((t) =>
+  coefficentOfFriction(accelerationParallel(t))
+);
+```
+
+The output is: {data.map((d) => d.toFixed(2)).join(", ")}.
+When averaging these results, we get a value of {(data.reduce((a, b) => a + b) / data.length).toFixed(2)}.
+
+## Error Analysis
+
+Since we forgot to measure the height of the slide during our testing, we had to rely on another group's measurement of the height. Also, when looking at the data, there's also a clear outlier: 2.11 seconds, in comparison to 1.52 and 1.68 seconds. In order to get a more accurate mesaurement we should have got more data points. Compared to other labs, there seems to less room for error.
+
+## Conclusion
+
+It turns out that my hypothesis was correct. The notebook on the slide is more slippery than the other objects in the friction banana peel lab. This is beacuse the coeffeicent of friction is {(data.reduce((a, b) => a + b) / data.length).toFixed(2)} compared to the dootstop (0.625), sock (0.747), and banana peel (0.748).
+
+</Layout>

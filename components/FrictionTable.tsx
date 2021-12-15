@@ -1,4 +1,8 @@
-import { bananaPeelData, doorstopData, sockData } from "../utils/friction";
+import {
+  bananaPeelData,
+  doorstopData,
+  sockData,
+} from "../utils/friction-banana-peel";
 
 export const FrictionBananaPeelTable = () => {
   return (
