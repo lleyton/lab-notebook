@@ -1,0 +1,101 @@
+import Layout from "../../components/Layout";
+import { workPerClimb, averagePower, amountOfPeanutsBurned } from "../../utils/stair-climbing";
+
+<Layout>
+# Stair Climbing Lab
+
+## Introduction
+
+In this lab, we'll be timing how long it takes to climb a staircase of a given height, and use those timings and other measurements to practice calculating work and energy. We will use our calculations to determine how many peanuts we would burn during a climb of the stairs.
+
+## Materials
+
+- Scale
+- Ruler
+- Stairs
+- Stopwatch
+
+## Procedure
+
+1)  Measure your weight using the scale.  Weight should be expressed in newtons. Convert pounds to newtons by multiplying pounds by 4.45.  Convert kilograms to newtons with Newton’s 2nd Law (F=ma).  Multiply kilograms by the acceleration due to gravity.  
+2)  Measure the height of one stair (in meters).
+3)  Count the number of steps you will be climbing—and multiply this by the height of a step to find the total height, in meters.
+4)  Climb the stairs as quickly and as safely as possible while your partner times you.  Record the time as accurately as possible.  CAUTION: Be very careful.  Make sure you hold onto the hand rail.
+5)  Repeat step #4 twice, completing two more runs.  CAUTION:  Be careful, if you are feeling overly exerted, do not continue.
+6)  Switch roles with your partner and repeat steps #4 & #5.
+
+
+## Data
+
+### Constants
+
+- Weight: 842.8 N
+- Height of one step: 0.2m
+- Number of steps: 12
+
+### Time of Climbs (s)
+1. 4.47
+2. 3.74
+3. 3.72
+4. 4.02
+5. 4.12
+6. 4.06
+7. 3.27
+8. 4.21
+9. 4.33
+10. 3.81
+
+## Data Analysis
+
+First, let's define some constants from our measurements.
+
+```ts
+const weight = 842.8
+const heightOfStep = 0.2
+const steps = 12
+const stairHeight = heightOfStep * steps
+const timeOfClimbs = [
+    4.47,
+    3.74,
+    3.72,
+    4.02,
+    4.12,
+    4.06,
+    3.27,
+    4.21,
+    4.33,
+    3.81,
+]
+```
+
+Next, we can get the work done per climb by multiplying the force (weight of person in neutons) by the displacement (height of the stair in meters). This value is {Math.trunc(workPerClimb)}J.
+
+```ts
+export const workPerClimb = weight * stairHeight
+```
+
+From here, we are able to calculate the power used by simpily dividing the work per climb by the time of each the climb. Then we'll get the average power of all of the climbs, which is {averagePower}W.
+
+```ts
+const powerPerClimb = (work: number, time: number) => work / time
+const powerForClimbs = timeOfClimbs.map(time => powerPerClimb(workPerClimb, time))
+export const averagePower = powerForClimbs.reduce((a, b) => a + b) / powerForClimbs.length
+```
+
+Finally, we can calculate the amount of peanuts burned during our climb, assuming that each peanut is 24kJ of energy. This gets us that around {amountOfPeanutsBurned} peanuts were burned.
+
+```ts
+export const amountOfPeanutsBurned = workPerClimb / (24 * 1000)
+```
+
+We can observe that work is going to be constant for all of the stair climbs since work doesn't depend on time, whereas power does.
+
+## Error Analysis
+
+The most likely source of errors in this lab are going to be the measurement of the times it takes to climb the stairs, since we just had a person with a stopwatch taking the time. To mitigate this, we averaged the power over 10 climbs.
+
+## Conclusion
+
+Through this lab, we observed the role of force, work, and energy in the context of climbing stairs, which allowed us to practice applying the work and energy equations. Using the work we were able to get the amount of peanuts burned during a climb of the stairs which is a lot smaller than I personally expected.
+
+</Layout>
