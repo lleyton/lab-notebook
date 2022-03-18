@@ -1,0 +1,77 @@
+import Layout from "../../components/Layout";
+import { RunsTable } from "../../components/MedicineBallTable"
+import { velocityBeforeImpact, averageRun } from '../../utils/medicine-ball'
+
+<Layout>
+# Medicine Ball Lab
+
+## Introduction
+
+We'll be using the conversation of momentum equation to determine the velocity of a medicine ball right before it's caught.
+
+## Materials
+
+- Medicine ball
+- Ruler
+- Scooter
+- Stopwatch
+
+## Procedure
+
+1)  Measure the mass of the medicine ball and the person selected to receive it while sitting in the scooter.
+2)  Throw the medicine ball at the receiver.
+3)  Have someone measure the time it takes to fully stop and also measure the distance between the initial position of the receiver and the final position.
+4)  Repeat steps 2-3 6 times.
+
+## Data
+
+- Mass of medicine ball: 7kg
+- Mass of receiver: 70kg
+
+### Attempts
+
+<RunsTable/>
+
+## Data Analysis
+
+First, let's import our data.
+
+```ts
+const medicineBallMass = 7
+const receiverMass = 70
+
+export const runs = [
+    { time: 4.7, distance: 0.50 },
+    { time: 4.38, distance: 0.46 },
+    { time: 5.28, distance: 0.35 },
+    { time: 1.22, distance: 0.05 },
+    { time: 6.02, distance: 0.42 },
+    { time: 0.86, distance: 0.20 }
+]
+```
+
+Next, we're going to average our data, which gets us an average time of {averageRun.time.toFixed(2)} and average distance of {averageRun.distance.toFixed(2)}.
+
+```ts
+export const averageRun = {
+    time: runs.map(row => row.time).reduce((a, b) => a + b) / runs.length,
+    distance: runs.map(row => row.distance).reduce((a, b) => a + b) / runs.length
+}
+```
+
+Now, we can apply the conversation of momentum equation (m1v1 + m2v2 = m1v1f + m2v2f), which gives us the velocity of the medicine ball right before impact. We can get the average velocity when the receiver gets the medicine ball by dividing the average distance by the average time. This means the initial velocity of the ball is {velocityBeforeImpact.toFixed(2)}m/s.
+
+```ts
+export const velocityBeforeImpact = ((medicineBallMass + receiverMass) * averageRun.distance) / medicineBallMass
+```
+
+
+## Error Analysis
+
+We didn't use exact weights for these measurements, we took the weight the receiver remembered and added the weight of the chair to it. We also estimated that the medicine ball was 7kg, since we forgot to note the weight of it.
+
+## Conclusion
+
+It is possible to get the initial velocity of a moving object in a system by just knowing the weight of the object and receiver, as well as the distance and time traveled. However, I don't assume our results to be even roughly accurate, espeically with a major outlier in our final run. Conversation of momentum can be useful for calculating mass or velocity in the case of collisions.
+
+</Layout>

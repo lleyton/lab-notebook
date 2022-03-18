@@ -1,0 +1,97 @@
+import Layout from "../../components/Layout";
+import { WithLoopTable } from "../../components/RollerCoasterTable";
+import { withLoopAverage, realRequiredVelocity, theoreticalRequiredVelocity } from "../../utils/roller-coaster";
+
+<Layout>
+# Roller Coaster Lab
+
+## Introduction
+
+In this lab, we'll be finding the optimimal height for a toy car to make it around a loop the loop using conversation of energy. We'll be comparing this to real-world measurements to see how much friction the required height. I expect more height and velocity to be required in the real-world.
+
+## Materials
+
+- hot wheels set
+- meter stick
+- timer
+
+## Procedure
+
+1)  Split into groups of 3-5
+2)  Set up Hot Wheels set such that there is one loop the loop and one simple descent, side by side. Each track should end in a ramp from which the car will jump.
+3)  Find the angle of elevation of the ramp off of which the car will jump (by measuring)
+4)  Let the two cars go at the same time. Time how long it takes the descending-then-jumping car takes to leave the ramp and then land on the ground.
+5)  Measure how far out the jumping car went
+6)  Find the initial velocity of the jump
+7)  This initial velocity will be the same as the final velocity of the car at the bottom of the loop. Compare this velocity to what your prediction would be from conservation of energy. Account for any discrepancy you find.
+8)  Find the velocity necessary for the car to just make it around the loop.
+9)  When you find vmin find the initial height of the hill, then compare it to the radius of your loop-the-loop.
+10) Compare these values to what would be predicted via conservation of energy
+
+## Data
+
+Loop radius: 0.2064m
+Angle of elevation: 28deg
+Height of ramp: 1.745m
+
+### With Loop
+
+<WithLoopTable/>
+
+## Data Analysis
+
+First, let's import our data.
+
+```ts
+export const loopRadius = 0.2064
+
+export const withLoop = [
+    { time: 0.42, distance: 0.63 },
+    { time: 0.43, distance: 0.60 },
+    { time: 0.46, distance: 0.49 },
+    { time: 0.41, distance: 0.61 },
+    { time: 0.40, distance: 0.59 }
+]
+
+export const angleOfElevation = 28
+```
+
+Then, let's average both the times and the distances for the runs. This gets us an average time of {withLoopAverage.time.toFixed(2)} seconds and an average distance of {withLoopAverage.distance.toFixed(2)} meters.
+
+```ts
+export const withLoopAverage = {
+    time: withLoop.map(row => row.time).reduce((a, b) => a + b) / withLoop.length,
+    distance: withLoop.map(row => row.distance).reduce((a, b) => a + b) / withLoop.length
+}
+```
+
+From here, we can get the real-world initial velocity using 1D kinematics, which ends up being {realRequiredVelocity.toFixed(2)}m/s.
+
+```ts
+const radiansToDegrees = (radians: number) => (radians * 180) / Math.PI
+export const realRequiredVelocity = withLoopAverage.distance / (Math.cos(radiansToDegrees(angleOfElevation)) * withLoopAverage.time)
+```
+
+Next, let's use the circular motion equation to find the theroretical velocity in order to get past the loop, which is {theoreticalRequiredVelocity.toFixed(2)}m/s.
+
+```ts
+export const theoreticalRequiredVelocity = Math.sqrt(9.8 * loopRadius)
+```
+
+Finally, we can find the optimal initial height based on conversation of energy for the car to make it around the loop.
+
+```ts
+export const minimumHeight = 2.5 * loopRadius
+```
+
+In the real world, the minimum velocity required was higher than the one calculated based on conversation of energy, which means more height would also be required. The difference of velocity is: {(realRequiredVelocity - theoreticalRequiredVelocity).toFixed(2)}m/s.
+
+## Error Analysis
+
+We forgot to measure the height of the ramp, so we estimated it based on a photo. Besides that, other error could occur from our method of measurement, which included both human testimony and rough video evidence to determine when and where the car landed. 
+
+## Conclusion
+
+In practice the required velocity to complete a jump in a loop the loop is higher than it would be when simpily calculating it based on the conversation of motion. In the real would, it's important to realize that you need to account for friction, which cannot be accounted for by a simple conversation of energy equation.
+
+</Layout>
