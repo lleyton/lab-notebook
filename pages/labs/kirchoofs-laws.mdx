@@ -1,0 +1,103 @@
+import Layout from "../../components/Layout";
+import { KirchoofsLawsTable } from "../../components/KirchoofsLawsTable";
+import {
+  loop1Result,
+  loop2Result,
+  nodeA,
+  nodeB,
+  nodeC,
+  nodeD,
+} from "../../utils/kirchoofs-laws";
+
+<Layout>
+  
+# Kirchoof's Laws
+
+## Introduction
+
+In this lab, we'll be using a snap circut set to construct an arbitary circut and a multimeter measuring voltage, current, and resistance, comparing our results to the expected results under Kirchhoff's laws. The idea is to see if the Kirchhoff's laws hold for our circuit, and thus prove it.
+
+## Materials
+
+- Snap Circut Set
+- Assorted Resistors
+- Multimeter
+
+## Used Equations & Setup
+
+![Figure 1](/laws-figure1.png)
+
+Loop 1: V1 +V2 +V5 = VS (1a)
+
+Loop 2: V3 +V4 = V2 (1b)
+
+Node a: Is = I1 (2a)
+
+Node b: I1 = I2 + I3 (2b)
+
+Node c: I3 = I4 (2c)
+
+Node d: I2 + I4 = I5 (2d)
+
+## Procedure
+
+1. Construct the circuit shown in Figure 1 using the values below:
+
+- R1 = 1 KΩ
+- R2 = 5.1 KΩ
+- R3 = 10 KΩ
+- R4 = 100 KΩ
+- R5 = 100 Ω = 0.1 KΩ
+
+2. Attach 2 batteries (3 Volts, total) to the circuit.
+3. Accurately measure all voltages and currents in the circuit using the Digital Multi-Meter (DMM).
+4. Record the measurements in a tabular form containing the measured voltage and current values.
+5. Verify KVL for the loops in the circuit using equations 1a and 1b.
+6. Verify KCL for the nodes in the circuit using equations 2a, 2b, 2c and 2d.
+
+## Data
+
+<KirchoofsLawsTable />
+
+## Data Analysis
+
+Now that we have our data, we can prove Kirchhoff's Voltage Law, that the volatge of the source (battery) subtracted by the sum of the voltages in each loop equals 0.
+
+```ts
+export const source = data[5].volts;
+export const loop1 = data[0].volts + data[1].volts + data[4].volts;
+export const loop1Result = source - loop1;
+
+export const loop2 = data[2].volts + data[3].volts + data[4].volts;
+export const loop2Result = source - loop2;
+```
+
+The value of `loop1Result` is about {loop1Result.toFixed(2)}V, and the value of `loop2Result` is about {loop2Result.toFixed(2)}V. While these results are not exactly zero, accounting error, they're close enough to be considered equal, and thus provide a good indication of Kirchhoff's Law.
+
+Next, we'll prove Kirchhoff's Current Law, that the sum of current of branches in a circuit must be equal to the source current entering those branches. We can do this by finding the difference of the sum of the currents in the branches at each lettered node and the source current, checking if they're equal to 0.
+
+```ts
+export const nodeA = data[5].milliAmp - data[0].milliAmp;
+export const nodeB = data[0].milliAmp - (data[1].milliAmp + data[2].milliAmp);
+export const nodeC = data[2].milliAmp - data[3].milliAmp;
+export const nodeD = data[1].milliAmp + data[3].milliAmp - data[4].milliAmp;
+```
+
+The approximate results are as follows:
+
+- Node A: {nodeA.toFixed(2)}mA
+- Node B: {nodeB.toFixed(2)}mA
+- Node C: {nodeC.toFixed(2)}mA
+- Node D: {nodeD.toFixed(2)}mA
+
+Since the difference of the source and leading branches is 0, meaning they're equal values, we can conclude that Kirchhoff's Current Law holds.
+
+## Error Analysis
+
+Besides human error, we noticed that the measured resistances are different than the ones rated on the resistors themselves. This could indicate a slight issue in the multimeter or our measuring methodology. We also noticed that the result of the multimeter would fluctuate a lot.
+
+## Conclusion
+
+Using our measurements we were able to prove Kirchhoff's Voltage and Current Laws. While there was some differences in the actual results compared to the expected results, when accouting errors, we are able to conclude that they are essentially equal.
+
+</Layout>
